@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.a{width:194px;height:71px;margin:0 600px;}
+			img{width: 60px;}
+			h2{margin: 30px 0;text-indent: 30px;margin-left:540px;color:#CCCCCC;}
+			em{display: block;width: 100px;line-height: 30px;text-align: center;background: red;border-radius: 6px;margin: 0 auto;margin-top: 10px;font-style: normal;cursor: pointer;color: #fff;}
+			input[type="number"]{width:50px}
+			tr{text-align: -webkit-center;}
+			footer {
+				margin-left: 50px;
+  width: 100%;
+  background: #fafafa;
+  height: 292px; }
+
+footer .nav {
+  margin-top: 24px; }
+
+footer .nav a {
+  font: 14px/73px "";
+  color: #535353;
+  margin-right: 22px; }
+
+footer .tupian {
+  width: 582px;
+  position: relative; }
+
+footer .tupian img {
+  margin-right: 19px;
+  width: 122px;
+  height: 47px; }
+
+footer .tupian img.te {
+  margin-top: 18px; }
+
+footer .tupian img.weixin {
+  width: 343px;
+  height: 161px;
+  position: absolute;
+  left: 910px;
+  top: -47px; }
+
+footer .copy {
+  margin-top: 37px;
+  width: 100%; }
+
+footer .copy li {
+  text-align: center;
+  font-size: 14px;
+  color: #666; }
+
+footer .copy span {
+  display: block;
+  text-align: center; }
+
+footer .copy span a {
+  font: 12px/32px "";
+  color: #939393;
+  margin-left: 6px; }
+
+footer .nav a:hover {
+  color: #ff498c; }
+		</style>
+	</head>
+	<body>
+		<img class = "a" src="../imgs/logo.png">
+		<h2><a href = "index.html">页面首页</a>购物车<small>&nbsp;&nbsp;<a href="goods.html" target="_blank">继续购物</a></small></h2>
+		<table border="1" cellspacing="0" width="1000" align="center">
+			<thead>
+				<tr>
+					<th></th>
+					<th width="100">商品图片</th>
+					<th>名字</th>
+					<th>价格</th>
+					<th width="120">数量</th>
+					<th>总价</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!--<tr>
+					<td><img src=""/></td>
+					<td>名字</td>
+					<td>价格</td>
+					<td>1</td>
+					<td><em data-index="">删除</em></td>
+				</tr>-->
+			</tbody>
+			<thead>
+				<tr>
+					<td colspan="2"><input type="checkbox" name="" id="xuan" value="" />全部选中</td>
+					<td align="center">总价：</td>
+					<td class="a">0</td>
+					<td>总数量：10</td>
+					<td><em>全部删除</em></td>
+					<td><em>全部结算</em></td>
+					
+				</tr>
+			</thead>
+		</table>
+		<footer>
+			<div class="margin">
+				<div class="nav">
+					<a href="#">首页</a>
+					<a href="#">营业执照</a>
+					<a href="#">产品认证</a>
+					<a href="#">品牌合作</a>
+					<a href="#">网站地图</a>
+					<a href="#">诚聘英才</a>
+					<a href="#">快递查询</a>
+					<a href="#">研发中心</a>
+					<a href="#">化妆品资讯</a>
+				</div>
+				<div class="tupian">
+					<img src="../imgs/360.png" />
+					<img src="../imgs/xiamen.png" />
+					<img src="../imgs/zfb.png" />
+					<img src="../imgs/kj.png" />
+					<img class="te" src="../imgs/shiming.png" />
+					<img class="weixin" src="../imgs/lianxi.png" />
+				</div>
+				<div class="copy">
+					<li>COPYRIGHT @2004-2018 PBA化妆品 美妆商城 厦门美易在线科技股份有限公司版权所有 PBA.CN 闽ICP备00900392</li>
+					<span><img src="../imgs/gongan.png" /><a href="#">闽公网安备 35020302000910号</a></span>
+				</div>
+			</div>
+
+		</footer>
+	</body>
+	<script src="../js/jquery.js"></script>
+	<script src="../js/jquery.cookie.js"></script>
+	<script type="text/javascript">
+		class Car{
+			constructor(){
+				this.url = "http://localhost:8888/js/goods.json";
+				this.load()
+				this.init()
+			}
+			load(){
+				var that = this;
+				$.ajax({
+					url:this.url,
+					type:"get",
+					success:function(res){
+						that.res = res;
+						that.getCookie();
+						that.remove()
+					},
+					dataType:"json"
+				})
+			}
+			getCookie(){
+				this.goods = JSON.parse($.cookie("goods"))
+				this.display()
+			}
+			display(){
+				var str = ""
+				for(var i=0;i<this.res.length;i++){
+					for(var j=0;j<this.goods.length;j++){
+						if(this.res[i].goodsId == this.goods[j].id){
+							str += `<tr>
+										<td><input type="checkbox"></td>
+										<td><img src="${this.res[i].src}"/></td>
+										<td>${this.res[i].name}</td>
+										<td>${this.res[i].price}</td>
+										<td><input type="number" value="${this.goods[j].num}" min="1"></td>
+										<td class = "jia">${this.res[i].price*this.goods[j].num}</td>
+										<td><em data-index="${this.res[i].goodsId}">删除</em></td>
+									</tr>`
+						}
+					}
+				}
+				$("tbody").html(str);
+				
+				this.jia()
+			}
+			remove(){
+				var that = this;
+				$("tbody").on("click","em",function(){
+					var id = $(this).attr("data-index");
+					$(this).parent().parent().remove()
+					
+					that.changeCookie(id,function(i){
+						that.goods.splice(i,1)
+					})
+				})
+			}
+			init(){
+				var that = this;
+				$("tbody").on("change","input",function(){
+					var id = $(this).parent().next("td").children("em").attr("data-index");
+					var val = $(this).val();
+					
+					that.changeCookie(id,function(i){
+						that.goods[i].num = val
+					})
+				})
+			}
+			changeCookie(id,callback){
+				for(var i=0;i<this.goods.length;i++){
+					if(this.goods[i].id == id){
+						callback(i)
+					}
+				}
+				$.cookie("goods",JSON.stringify(this.goods))
+			}
+			jia(){
+				$("#xuan").on("click",()=>{
+					 this.td = $("td.jia")
+//					 console.log(this)
+//					console.log(this.td)
+					this.num = 0;
+					for(var i = 0;i<this.td.length;i++){
+						
+						this.num +=  parseInt(this.td[i].innerHTML)
+					}
+					
+					$("td.a").html(this.num)+"￥"
+				})
+				
+			}
+		}
+		
+		
+		new Car()
+	</script>
+</html>

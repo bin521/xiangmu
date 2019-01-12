@@ -1,0 +1,41 @@
+[{
+	"goodsId":"12321123",
+	"src":"../imgs/1.jpg",
+	"price":"799.00",
+	"name":"可爱热门小猫咪"
+},{
+	"goodsId":"123213123",
+	"src":"../imgs/2.jpg",
+	"price":"499.00",
+	"name":"萌猫秀逗全场"
+},{
+	"goodsId":"234234",
+	"src":"../imgs/3.jpg",
+	"price":"999.00",
+	"name":"我爱大萌猫"
+},{
+	"goodsId":"3",
+	"src":"../imgs/4.jpg",
+	"price":"988.00",
+	"name":"猫步的萌猫"
+},{
+	"goodsId":"4",
+	"src":"../imgs/1.jpg",
+	"price":"999.00",
+	"name":"可爱热门小猫咪"
+},{
+	"goodsId":"5",
+	"src":"../imgs/2.jpg",
+	"price":"988.00",
+	"name":"萌猫秀逗全场 "
+},{
+	"goodsId":"6",
+	"src":"../imgs/3.jpg",
+	"price":"999.00",
+	"name":"猫步的萌猫"
+},{
+	"goodsId":"7",
+	"src":"../imgs/4.jpg",
+	"price":"988.00",
+	"name":"我爱大萌猫 "
+}]

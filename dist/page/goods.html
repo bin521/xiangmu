@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			*{margin: 0;padding: 0;}
+			.a{width:194px;height:71px;margin:0 600px;}
+			h2{margin: 30px 0;text-indent: 30px;margin-left:500px;color:#ccc;}
+			#goods{width: 1000px;overflow: hidden;margin: 10px auto;border: solid 1px black;}
+			.box{width: 200px;border: solid 1px black;box-sizing: border-box;text-align: center;padding: 6px 0;float: left;}
+			.box img{width: 60%;}
+			.box span{display: block;margin: 6px 0;}
+			.box p{display: block;height: 20px;overflow: hidden;}
+			.box em{display: block;width: 100px;line-height: 30px;text-align: center;background: yellow;border-radius: 6px;margin: 0 auto;margin-top: 10px;font-style: normal;cursor: pointer;color: #fff;}
+			footer {
+				margin-left:50px;
+  width: 100%;
+  background: #fafafa;
+  height: 292px; }
+
+footer .nav {
+  margin-top: 24px; }
+
+footer .nav a {
+  font: 14px/73px "";
+  color: #535353;
+  margin-right: 22px; }
+
+footer .tupian {
+  width: 582px;
+  position: relative; }
+
+footer .tupian img {
+  margin-right: 19px;
+  width: 122px;
+  height: 47px; }
+
+footer .tupian img.te {
+  margin-top: 18px; }
+
+footer .tupian img.weixin {
+  width: 343px;
+  height: 161px;
+  position: absolute;
+  left: 910px;
+  top: -47px; }
+
+footer .copy {
+  margin-top: 37px;
+  width: 100%; }
+
+footer .copy li {
+  text-align: center;
+  font-size: 14px;
+  color: #666; }
+
+footer .copy span {
+  display: block;
+  text-align: center; }
+
+footer .copy span a {
+  font: 12px/32px "";
+  color: #939393;
+  margin-left: 6px; }
+
+footer .nav a:hover {
+  color: #ff498c; }
+		</style>
+	</head>
+	<body>
+		<img class = "a" src="../imgs/logo.png">
+		<h2><a href = "index.html">页面首页</a>商品列表<small>&nbsp;&nbsp;<a href="car.html" target="_blank">去购物车结算</a></small></h2>
+		<div id="goods">
+			
+		</div>
+		<footer>
+			<div class="margin">
+				<div class="nav">
+					<a href="#">首页</a>
+					<a href="#">营业执照</a>
+					<a href="#">产品认证</a>
+					<a href="#">品牌合作</a>
+					<a href="#">网站地图</a>
+					<a href="#">诚聘英才</a>
+					<a href="#">快递查询</a>
+					<a href="#">研发中心</a>
+					<a href="#">化妆品资讯</a>
+				</div>
+				<div class="tupian">
+					<img src="../imgs/360.png" />
+					<img src="../imgs/xiamen.png" />
+					<img src="../imgs/zfb.png" />
+					<img src="../imgs/kj.png" />
+					<img class="te" src="../imgs/shiming.png" />
+					<img class="weixin" src="../imgs/lianxi.png" />
+				</div>
+				<div class="copy">
+					<li>COPYRIGHT @2004-2018 PBA化妆品 美妆商城 厦门美易在线科技股份有限公司版权所有 PBA.CN 闽ICP备00900392</li>
+					<span><img src="../imgs/gongan.png" /><a href="#">闽公网安备 35020302000910号</a></span>
+				</div>
+			</div>
+
+		</footer>
+	</body>
+	<script src="../js/jquery.js"></script>
+	<script src="../js/jquery.cookie.js"></script>
+	<script type="text/javascript">
+		
+		class Shop{
+			constructor(){
+				this.url = "http://localhost:8888/js/goods.json"
+				this.load()
+			}
+			load(){
+				var that = this;
+				$.ajax({
+					type:"get",
+					url:this.url,
+					success:function(res){
+						that.res = res;
+						that.display()
+					},
+					dataType:"json"
+				})
+			}
+			display(){
+				var str = "";
+				for(var i=0;i<this.res.length;i++){
+					str += `<div class="box" data-id="${this.res[i].goodsId}">
+								<img src="${this.res[i].src}">
+								<span>${this.res[i].price}</span>
+								<p>${this.res[i].name}</p>
+								<em>添加购物车</em>
+							</div>`;
+				}
+				$("#goods").html(str);
+				this.init();
+			}
+			init(){
+				var that = this;
+				this.goods = []
+				$("#goods").on("click","em",function(){
+					var goodsId = $(this).parent().attr("data-id");
+					if(!$.cookie("goods")){
+						that.goods.push({
+							id:goodsId,
+							num:1
+						})
+						$.cookie("goods",JSON.stringify(that.goods))
+					}else{
+						that.goods = JSON.parse($.cookie("goods"));
+						var onOff = false;
+						for(var i=0;i<that.goods.length;i++){
+							if(that.goods[i].id == goodsId){
+								that.goods[i].num++
+								onOff = true;
+							}
+						}
+						if(!onOff){
+							that.goods.push({
+								id:goodsId,
+								num:1
+							})
+						}
+						$.cookie("goods",JSON.stringify(that.goods));
+					}
+					console.log($.cookie("goods"))
+				})
+			}
+		}
+		
+		
+		new Shop()
+	</script>
+</html>
